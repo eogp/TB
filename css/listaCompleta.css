@@ -27,6 +27,19 @@ html,body{
 
 }
 
+table{
+    margin: auto;
+    width: 1000px;
+    text-align: center;
+    margin-top: 60px;
+}
+td, tr{
+    margin: auto;
+    padding-bottom: 10px;
+    padding-top:10px;
+    text-align: center;
+}
+
 /*----------------header---------------------*/
 .header-user{
     height:90px;
@@ -51,6 +64,7 @@ html,body{
 .principal{
     background-color: white;
     height: 100%;
+    color: black;
 }
 
 .imagenPerfil{

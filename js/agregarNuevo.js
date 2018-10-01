@@ -7,8 +7,13 @@
 
 
 // A $( document ).ready() block.
-$( document ).ready(function() {
+$(document).ready(function () {
     heightMap();
+    //CONTENIDOS POR CATEGORIA DE TIPO--------------------
+    document.getElementById('select-tipo').addEventListener('change', function () {
+        contenidoPorTipo(this.value);
+    });
+
 });
 
 //ajusta la aultura del div menu y el rpincipal
@@ -26,3 +31,40 @@ function heightMap() {
         document.getElementById('menu').style.height = "" + $(window).height() - 70 + "px";
     });
 }
+
+function contenidoPorTipo(valor) {
+    switch (valor) {
+        case '1':
+            //TEXTO
+            $('#div-texto').show();
+            $('#div-imagen').hide();
+            $('#div-duracion').show();
+            $('#div-video').hide();
+            $('#submit').prop('disabled', false);
+            break;
+        case '2':
+            //IMAGEN
+            $('#div-texto').hide();
+            $('#div-imagen').show();
+            $('#div-duracion').show();
+            $('#div-video').hide();
+            $('#submit').prop('disabled', false);
+            break;
+        case '3':
+            //VIDEO
+            $('#div-texto').hide();
+            $('#div-imagen').hide();
+            $('#div-duracion').hide();
+            $('#div-video').show();
+            $('#submit').prop('disabled', false);
+            break;
+        default:
+            $('#div-texto').hide();
+            $('#div-imagen').hide();
+            $('#div-duracion').hide();
+            $('#div-video').hide();
+            $('#submit').prop('disabled', true);
+            break;
+    }
+}
+

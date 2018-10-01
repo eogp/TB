@@ -4,6 +4,11 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<?php
+require "db/DBSingleton.php";
+$dbSingleton = DBSingleton::getInstance();
+$db = $dbSingleton->getRedBean();
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -32,7 +37,7 @@ and open the template in the editor.
                     </select>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 header">
-
+                   
                 </div>
 
             </div>
@@ -66,7 +71,60 @@ and open the template in the editor.
                 <!-- Fin Menu -->  
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
-
+                     <table>
+                         
+                        <tr>
+                            <td>
+                                Nombre
+                            </td>
+                            <td>
+                                Categoria
+                            </td>
+                            <td>
+                                Tipo
+                            </td>
+                            <td>
+                                Duración
+                            </td>
+                            <td>
+                                Fecha de carga
+                            </td>
+                            <td colspan="2">
+                                Acciones
+                            </td>
+                            <td>
+                                Estado
+                            </td>
+                        </tr>
+                   
+                         <?PHP                            
+                            $pantallas = $db->findAll("pantallas");
+                            $retorno = '';
+                            foreach ($pantallas as $pantalla) {
+                                $categoria = $db->findOne("CATEGORIAS", "id = ".$pantalla->id_categorias);
+                                $tipo = $db->findOne("TIPOS", "id = ". $pantalla->id_tipos);
+                                $retorno = $retorno . "<tr>".
+                                        '<td>' . $pantalla->nombre . '</td>' 
+                                        .'<td>'. $categoria->descripcion . '</td>'
+                                        .'<td>'. $tipo->descripcion . '</td>'
+                                        .'<td>';
+                                        if($pantalla->id_tipos==3)
+                                            $retorno = $retorno . '-- : --' . '</td>';
+                                        else
+                                            $retorno = $retorno . $pantalla->duracion . '</td>';
+                                        $retorno = $retorno .'<td>'. $pantalla->fecha . '</td>'
+                                        .'<td > Editar </td>'
+                                        .'<td > Eliminar </td>'
+                                        .'<td>';
+                                        if($pantalla->activo) 
+                                            $retorno = $retorno . 'Activo'.'</td>';
+                                        else
+                                             $retorno = $retorno . 'Inactivo'.'</td>';
+                                        $retorno = $retorno ."</tr>";
+                            }
+                            echo $retorno;
+                         ?>
+                    </table>
                 </div>
                 <!-- Fin Principal --> 
             </div>
