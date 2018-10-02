@@ -27,7 +27,7 @@ if (isset($_POST['agregarPantalla'])) {
     $pantallas->id_categorias = $_POST['categoria'];
     $pantallas->nombre = $_POST['nombre'];
     $pantallas->fecha = $_POST['fecha']; 
-    $pantallas->ativo = 1;
+    $pantallas->activo = 1;
     
     //VERIFICO TIPO DE PANTALLAS PARA 
     switch ($_POST['tipo']) {

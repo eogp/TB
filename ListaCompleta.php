@@ -13,10 +13,11 @@ $db = $dbSingleton->getRedBean();
     <head>
         <meta charset="UTF-8">
         <title>TMB</title>
-        
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
         <link rel="stylesheet" href="css/listaCompleta.css" type="text/css"/><!-- Style -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
     </head>
     <body>
         <!-- ////////// Contenedor principal ////////// -->
@@ -26,12 +27,13 @@ $db = $dbSingleton->getRedBean();
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 header-user ">
                     <img src="images/user.png" class="imagenPerfil"/>
                     <select class="selectSesion">
-                        <option value="Hola" disabled selected>Hola <?php
-                            if (isset($_POST["usuario"])) {
-                                echo $_POST["usuario"];
-                            }else{
-                                echo "usuario";
-                            }
+                        <option value="Hola" disabled selected>Hola 
+                            <?php
+                                if (isset($_POST["usuario"])) {
+                                    echo $_POST["usuario"];
+                                }else{
+                                    echo "usuario";
+                                }
                             ?>  </option>
                         <option value="cerrarSesion">Cerrar sesión</option>
                     </select>
@@ -72,7 +74,6 @@ $db = $dbSingleton->getRedBean();
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
                      <table>
-                         
                         <tr>
                             <td>
                                 Nombre
@@ -96,13 +97,13 @@ $db = $dbSingleton->getRedBean();
                                 Estado
                             </td>
                         </tr>
-                   
-                         <?PHP                            
-                            $pantallas = $db->findAll("pantallas");
+                        <?PHP                            
+                            $pantallas = $db->find("pantallas","activo=?",[1]);
                             $retorno = '';
                             foreach ($pantallas as $pantalla) {
-                                $categoria = $db->findOne("CATEGORIAS", "id = ".$pantalla->id_categorias);
-                                $tipo = $db->findOne("TIPOS", "id = ". $pantalla->id_tipos);
+                                $categoria = $db->load("CATEGORIAS", $pantalla->id_categorias);
+                                $tipo = $db->load("TIPOS", $pantalla->id_tipos);
+                                $enLista = $db->findOne("listaactiva", "id_pantallas=?",[$pantalla->id]);
                                 $retorno = $retorno . "<tr>".
                                         '<td>' . $pantalla->nombre . '</td>' 
                                         .'<td>'. $categoria->descripcion . '</td>'
@@ -113,18 +114,20 @@ $db = $dbSingleton->getRedBean();
                                         else
                                             $retorno = $retorno . $pantalla->duracion . '</td>';
                                         $retorno = $retorno .'<td>'. $pantalla->fecha . '</td>'
-                                        .'<td > Editar </td>'
-                                        .'<td > Eliminar </td>'
-                                        .'<td>';
-                                        if($pantalla->activo) 
-                                            $retorno = $retorno . 'Activo'.'</td>';
+                                        .'<td > <a onclick="editar('.$pantalla->id.')"> Editar </a> </td>'
+                                        .'<td > <a onclick="eliminar('.$pantalla->id.')"> Eliminar </a> </td>'
+                                        .'<td> <a onclick="onOff('.$pantalla->id.')">';
+                                        
+                                        if($enLista) 
+                                            $retorno = $retorno . 'Activo'.'</a></td>';
                                         else
-                                             $retorno = $retorno . 'Inactivo'.'</td>';
+                                             $retorno = $retorno . 'Inactivo'.'</a></td>';
                                         $retorno = $retorno ."</tr>";
                             }
                             echo $retorno;
-                         ?>
+                        ?>
                     </table>
+                 
                 </div>
                 <!-- Fin Principal --> 
             </div>

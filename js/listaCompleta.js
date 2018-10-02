@@ -7,15 +7,15 @@
 
 
 // A $( document ).ready() block.
-$( document ).ready(function() {
+$(document).ready(function () {
     heightMap();
+
+
 });
 
 //ajusta la aultura del div menu y el rpincipal
 function heightMap() {
-
     //console.log($(window).height());
-
     // set initial div height / width
     document.getElementById('principal').style.height = "" + $(window).height() - 70 + "px";
     document.getElementById('menu').style.height = "" + $(window).height() - 70 + "px";
@@ -25,4 +25,54 @@ function heightMap() {
         document.getElementById('principal').style.height = "" + $(window).height() - 70 + "px";
         document.getElementById('menu').style.height = "" + $(window).height() - 70 + "px";
     });
+}
+
+function editar(id) {
+
+    alert("editar:" + id);
+
+
+}
+
+function eliminar(id) {
+    $.ajax({
+        data: {pantalla: id},
+        url: 'ws/eliminarWS.php',
+        type: 'POST',
+        success: function (response) {
+            if (response)
+            {
+                location.reload();
+            } else
+            {
+                alert("No se pudo completar la operación. Por favor reintente.");
+            }
+        },
+        error: function () {
+            alert("No se pudo completar la operación. Por favor reintente.");
+        }
+    });
+}
+
+function onOff(id) {
+
+    $.ajax({
+        data: {pantalla: id},
+        url: 'ws/onOffWS.php',
+        type: 'POST',
+        success: function (response) {
+            if (response)
+            {
+                location.reload();
+            } else
+            {
+                alert("No se pudo completar la operación. Por favor reintente.");
+            }
+        },
+        error: function () {
+            alert("No se pudo completar la operación. Por favor reintente.");
+        }
+    });
+
+
 }
