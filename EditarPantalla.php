@@ -8,6 +8,8 @@ and open the template in the editor.
 require "db/DBSingleton.php";
 $dbSingleton = DBSingleton::getInstance();
 $db = $dbSingleton->getRedBean();
+
+$pantalla=$db->load("pantallas", $_POST["idPantalla"]);
 ?>
 <html>
     <head>
@@ -15,7 +17,7 @@ $db = $dbSingleton->getRedBean();
         <title>TMB</title>
 
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
-        <link rel="stylesheet" href="css/agregarNuevo.css" type="text/css"/><!-- Style -->
+        <link rel="stylesheet" href="css/editarPantalla.css" type="text/css"/><!-- Style -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
@@ -64,7 +66,7 @@ $db = $dbSingleton->getRedBean();
                     <hr class="hr-menu">   
                     <div class="div_menu_selecionado row">
                         <img src="images/icono-agregar.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu-selecionado" value="Agregar nuevo">
+                        <input type="button" class="btn-menu-selecionado" value="Editar">
                     </div>
                     <hr class="hr-menu">
                 </div>
@@ -72,13 +74,14 @@ $db = $dbSingleton->getRedBean();
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
                     <div>
-                        <form action="controlers/agregarControler.php" method="post" enctype="multipart/form-data">
+                        <form action="controlers/editarControler.php" method="post" enctype="multipart/form-data">
                             <div>
                                 <div>
                                     Nombre:
+                                  
                                 </div>
                                 <div>
-                                    <input type="text" name="nombre">
+                                    <input type="text" name="nombre" value="<?php echo $pantalla->nombre ?>"/>
                                 </div>
                             </div>
                             <div>
@@ -87,12 +90,16 @@ $db = $dbSingleton->getRedBean();
                                 </div>
                                 <div>
                                     <select name="categoria">
-                                        <option value=0 selected="true" disabled="disabled">elija una opción</option>
+                                        <option value=0 disabled="disabled">elija una opción</option>
                                         <?php
                                         $categorias = $db->findAll("CATEGORIAS", "activo = 1");
                                         $retorno = "";
                                         foreach ($categorias as $categoria) {
-                                            $retorno = $retorno . '<option value=' . $categoria->id . '>' . $categoria->descripcion . '</option>';
+                                            $retorno = $retorno . '<option value=' . $categoria->id; 
+                                            if($categoria->id == $pantalla->id_categorias){
+                                                $retorno = $retorno . ' selected="true" ';
+                                            }
+                                            $retorno = $retorno . '>' . $categoria->descripcion . '</option>';
                                         }
                                         echo $retorno;
                                         //print_r($categorias);
@@ -100,34 +107,35 @@ $db = $dbSingleton->getRedBean();
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <div>
-                                    Tipo:
-                                </div>
-                                <div>
-                                    <select id="select-tipo" name="tipo">
-                                        <option value=0 selected="true" disabled="disabled">elija una opción</option>
-                                        <?php
-                                        $tipos = $db->findAll("TIPOS", "activo = 1");
-                                        $retorno = "";
-                                        foreach ($tipos as $tipo) {
-                                            $retorno = $retorno . '<option value=' . $tipo->id . '>' . $tipo->descripcion . '</option>';
-                                        }
-                                        echo $retorno;
-                                        //print_r($categorias);
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="div-texto" hidden>
+                           
+                            <div id="div-texto" 
+                                <?php 
+                                if($pantalla->id_tipos!=1)
+                                {
+                                    echo 'hidden';
+                                    
+                                }
+                                ?> >
                                 <div>
                                     Texto:
                                 </div>
                                 <div>
-                                    <input type="text" name="texto">
+                                    <input type="text" name="texto" value="<?php 
+                                    if($pantalla->id_tipos==1)
+                                    {
+                                        echo $pantalla->texto1;
+
+                                    }
+                                    ?>" >
                                 </div>    
                             </div>
-                            <div id="div-imagen" hidden>
+                            <div id="div-imagen"<?php 
+                                if($pantalla->id_tipos!=2)
+                                {
+                                    echo 'hidden';
+                                    
+                                }
+                                ?> >
                                 <div>
                                     Imágen:
                                 </div>
@@ -138,28 +146,41 @@ $db = $dbSingleton->getRedBean();
                                     <input type="file" accept=".png, .jpg, .jpeg" name="imagen" id="image-upload" />
                                 </div>
                             </div>
-                            <div id="div-duracion" hidden>
+                            <div id="div-duracion"  <?php 
+                                if($pantalla->id_tipos==3)
+                                {
+                                    echo 'hidden';
+                                    
+                                }
+                                ?>>
                                 <div>
                                     Duración:
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="minutos" name="minutos">
+                                    <input type="number" placeholder="minutos" name="minutos" value="<?php echo split(':', $pantalla->duracion)[0]?>"/>
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="segundos" name="segundos">
+                                    <input type="number" placeholder="segundos" name="segundos" value="<?php echo split(':', $pantalla->duracion)[1]?>"/>
                                 </div>
                             </div>
-                            <div id="div-video" hidden>
+                            <div id="div-video" <?php 
+                                if($pantalla->id_tipos!=3)
+                                {
+                                    echo 'hidden';
+                                    
+                                }
+                                ?>>
                                 <div>
                                     Link Vimeo:
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="copie el link aquí" name="video">
+                                    <input type="text" placeholder="copie el link aquí" name="video" value="<?php echo $pantalla->url_vimeo?>"/>
                                 </div>
                             </div>
                             <br>
                             <div>
-                                <input type="submit" value="Agregar" disabled="true" id="submit" name="agregarPantalla">
+                                <input type="hidden" name="idpantalla" value="<?PHP echo $pantalla->id ?>"/>
+                                <input type="submit" value="Actualizar" id="submit" name="editarPantalla"/>
                             </div>
                         </form>
                     </div>
@@ -172,5 +193,5 @@ $db = $dbSingleton->getRedBean();
     </body>
     <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
     <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
-    <script type="text/javascript" src="js/agregarNuevo.js"></script><!-- js -->
+    <script type="text/javascript" src="js/editarPantalla.js"></script><!-- js -->
 </html>

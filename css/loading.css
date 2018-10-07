@@ -11,8 +11,8 @@
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('../images/ajax-loader.gif') 
+    background: rgba( 192,192,192, 100) 
+                url('../fondos/tmb-separador-referencia.jpg') 
                 50% 50% 
                 no-repeat;
 }

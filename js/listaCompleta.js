@@ -5,6 +5,16 @@
  */
 
 
+//LOADING AJAX------------------------------------------------------------------
+$(document).on({
+    ajaxStart: function () {
+        $("body").addClass("loading");
+    },
+    ajaxStop: function () {
+        $("body").removeClass("loading");
+    }
+});
+//------------------------------------------------------------------------------
 
 // A $( document ).ready() block.
 $(document).ready(function () {
@@ -27,11 +37,24 @@ function heightMap() {
     });
 }
 
-function editar(id) {
-
-    alert("editar:" + id);
-
-
+function editar(pantallaId) {
+    $.ajax({
+        data: {pantalla_Id: pantallaId},
+        url: 'controlers/editarControler.php',
+        type: 'POST',
+        success: function (response) {
+            if (response == "") {
+                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
+            } else {
+                //alert(response);
+                //$(location).attr('href','EditarPantalla.php');
+                $(window).attr('location','EditarPantalla.php');
+            }
+        },
+        error: function () {
+            alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
+        }
+    });
 }
 
 function eliminar(id) {
@@ -73,6 +96,8 @@ function onOff(id) {
             alert("No se pudo completar la operación. Por favor reintente.");
         }
     });
-
-
 }
+
+
+
+
