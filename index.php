@@ -18,7 +18,7 @@ and open the template in the editor.
         ?>
 
         <div class="cuerpo">
-            <form action="controlers/loginTBControler.php" method="POST">
+            <form action="controlers/loginTbControler.php" method="POST">
                 <div class="row">
                     <div class="titulo">Bienvenido, por favor completa tus datos para ingresar.</div>
                 </div>

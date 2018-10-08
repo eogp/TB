@@ -21,9 +21,9 @@ class DBSingleton {
 
     private function __construct() {
         $this->redBean = new R();
-        $this->redBean->setup("mysql:host=localhost;dbname=TB", "root", "");
-
-//        $this->redBean->setup("mysql:host=localhost;dbname=c0600180_mycity","root","");
+        $this->redBean->setup("mysql:host=localhost;dbname=c0990002_tb", "c0990002_tb", "Albaro123456");
+        //$this->redBean->setup("mysql:host=localhost;dbname=TB", "root", "");
+        //this->redBean->setup("mysql:host=localhost;dbname=c0600180_mycity","root","");
     }
 
     public static function getInstance() {

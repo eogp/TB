@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario'])) {
     //$usuario = $_SESSION['usuario'];
 } else {
     session_destroy();
-    header('Location: Login.php');
+    header('Location: https://www.rockerapp.com/TB/Login.php');
     exit();
 }
 

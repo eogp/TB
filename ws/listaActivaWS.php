@@ -19,7 +19,7 @@ if (isset($_POST['pantalla']) && $_POST['pantalla'] == 1) {
         $pantalla = $db->load('pantallas', $item->id_pantallas);
         $pantallas[]= $pantalla;
     }
-    $categoriaDB = $db->findAll('categorias');
+    $categoriaDB = $db->findAll('CATEGORIAS');
     foreach ($categoriaDB as $item){
         $categorias[]=$item;
     }

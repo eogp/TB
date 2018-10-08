@@ -55,7 +55,7 @@ function iniciar() {
 //            if (response == "") {
 //                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
 //            } else {
-            //console.log("ajax");
+            //console.log(response);
             actualizarContenido(JSON.parse(response));
             separadorOff();
             //iniciarSwiper();
@@ -83,7 +83,7 @@ function actualizarContenido(json) {
 
                 $(div).addClass("swiper-slide");
                 
-                $(div).css('background-image', 'url(' + '/tb' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
+                $(div).css('background-image', 'url(' +  fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
                 
                 $(div2).css('display', 'table-cell');
                 $(div2).css('height', '1080px');
@@ -112,7 +112,7 @@ function actualizarContenido(json) {
 
                 div2 = document.createElement('div');
 
-                $(div2).css('background-image', 'url(' + '/tb' + json.pantallas[i].url_imagen + ')');
+                $(div2).css('background-image', 'url(' + json.pantallas[i].url_imagen + ')');
                 $(div2).css('height', '1080px');
                 $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
@@ -175,7 +175,7 @@ function fondoCategoria(json, id) {
 function iniciarSwiper() {
     console.log("iniciarSwiper");
     mySwiper = new Swiper('.swiper-container', {
-        speed: 400,
+        speed: 1500,
         spaceBetween: 100,
         effect: 'cube',
         init: false,
@@ -267,6 +267,6 @@ function separadorOff() {
         $("body").removeClass("loading");
         console.log("fin timer separador");
 
-    }, 30000);
+    }, 15000);
 
 }

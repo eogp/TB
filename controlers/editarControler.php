@@ -8,7 +8,7 @@ if (isset($_SESSION['usuario'])) {
     //$usuario = $_SESSION['usuario'];
 } else {
     session_destroy();
-    header('Location: ../Login.php');
+    header('Location: https://www.rockerapp.com/TB/Login.php');
     exit();
 }
 
@@ -50,7 +50,7 @@ if (isset($_POST['editarPantalla'])) {
 
     //GUARDO EL BEAN EN LA BD 
     $db->store($pantalla);
-    header('Location: ../ListaCompleta.php');
+    header('Location: https://www.rockerapp.com/TB/ListaCompleta.php');
     exit();
 
 //return $id_pantallas = $db->store($pantallas);
@@ -59,13 +59,13 @@ if (isset($_POST['editarPantalla'])) {
 //SUBIR IMAGENES Y RETORNAR RUTA EN SERVIDOR
 function subirImagen($id_patalla) {
     // MODIFICAR RUTA AL SUBIR AL HOSTING
-    $dir_subida = $_SERVER['DOCUMENT_ROOT'] . '/tb/imagenes_pantallas/';
+    $dir_subida = '/home/c0990002/public_html/TB/imagenes_pantallas/';
 
     if (isset($_FILES['imagen'])) {
         //GUARDADO  DE IMAGEN
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir_subida . 'imagen_pantalla_id_' . $id_patalla)) {
             //return $dir_subida.'imagen_pantalla_id_'.$id_patalla;
-            return '/imagenes_pantallas/' . 'imagen_pantalla_id_' . $id_patalla;
+            return 'https://www.rockerapp.com/TB/imagenes_pantallas/' . 'imagen_pantalla_id_' . $id_patalla;
         }
     }
 }

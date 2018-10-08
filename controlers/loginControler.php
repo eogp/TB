@@ -4,18 +4,18 @@ require "../db/DBSingleton.php";
 $dbSingleton = DBSingleton::getInstance();
 $db = $dbSingleton->getRedBean();
 if (isset($_POST["usuario"]) && isset($_POST["pass"])) {
-    $user = $db->getCell('select * from user where name="' . $_POST["usuario"] . '" and pass="' . $_POST["pass"] . '"');
+    $user = $db->getCell('select * from USER where name="' . $_POST["usuario"] . '" and pass="' . $_POST["pass"] . '"');
     if ($user) {
         session_start();
         $_SESSION['usuario'] = $_POST["usuario"];
-        header('Location: ../ListaActiva.php');
+        header('Location: https://www.rockerapp.com/TB/ListaActiva.php');
         exit();
     } else {
-        header('Location: ../Login.php');
+        header('Location: https://www.rockerapp.com/TB/Login.php');
         exit();
     }
 } else {
-    header('Location: ../Login.php');
+    header('Location: https://www.rockerapp.com/TB/Login.php');
     exit();
 }
 /*
