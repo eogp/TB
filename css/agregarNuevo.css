@@ -48,12 +48,6 @@ html,body{
     
 }
 
-.principal{
-    background-color: white;
-    height: 100%;
-    color: black;
-
-}
 
 .imagenPerfil{
     padding: 0px;
@@ -112,3 +106,60 @@ html,body{
     border-color: green;
 }
 
+/*----------------cuerpo---------------------*/
+
+.principal{
+    background-color: white;
+    height: 100%;
+    color: black;
+    padding: 100px;
+    padding-top: 80px; 
+    padding-left: 30%;
+}
+
+
+
+.input-cuerpo{
+        color: #006633;
+    border-radius: 5px;
+
+    width: 400px;
+    height: 30px;
+}
+
+.area-text{
+        color: #006633;
+    border-radius: 5px;
+
+    width: 400px;
+}
+
+.div-etiquetas{
+    font-size: 16px;
+    padding-bottom:  10px;
+    padding-top: 10px;
+}
+
+.select-cuerpo{
+    color: #006633;
+    background: white;
+    width: 400px;
+    height: 30px;
+        border-radius: 5px;
+
+    text-align-last:center;
+    cursor:pointer;
+}
+
+.button{
+    background-color: #006633;
+    border: none;
+    color: white;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.div-submit{
+     width: 400px;
+    text-align: center;
+}

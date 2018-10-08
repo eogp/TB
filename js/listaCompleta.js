@@ -19,7 +19,11 @@ $(document).on({
 // A $( document ).ready() block.
 $(document).ready(function () {
     heightMap();
-
+    $("#selec-sesion").change(function (){
+       if($('#selec-sesion').val()=='cerrarSesion'){
+           location.href = 'controlers/cerrarControler.php';
+       };
+    });
 
 });
 
@@ -48,7 +52,7 @@ function editar(pantallaId) {
             } else {
                 //alert(response);
                 //$(location).attr('href','EditarPantalla.php');
-                $(window).attr('location','EditarPantalla.php');
+                $(window).attr('location', 'EditarPantalla.php');
             }
         },
         error: function () {
@@ -58,23 +62,26 @@ function editar(pantallaId) {
 }
 
 function eliminar(id) {
-    $.ajax({
-        data: {pantalla: id},
-        url: 'ws/eliminarWS.php',
-        type: 'POST',
-        success: function (response) {
-            if (response)
-            {
-                location.reload();
-            } else
-            {
+    var opcion = confirm("¿Desea quitar este elemendo de la lista?");
+    if (opcion) {
+        $.ajax({
+            data: {pantalla: id},
+            url: 'ws/eliminarWS.php',
+            type: 'POST',
+            success: function (response) {
+                if (response)
+                {
+                    location.reload();
+                } else
+                {
+                    alert("No se pudo completar la operación. Por favor reintente.");
+                }
+            },
+            error: function () {
                 alert("No se pudo completar la operación. Por favor reintente.");
             }
-        },
-        error: function () {
-            alert("No se pudo completar la operación. Por favor reintente.");
-        }
-    });
+        });
+    }
 }
 
 function onOff(id) {

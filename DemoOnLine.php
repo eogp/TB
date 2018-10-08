@@ -8,10 +8,12 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title>TMB</title>
-        
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
         <link rel="stylesheet" href="css/agregarNuevo.css" type="text/css"/><!-- Style -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Cabin+Condensed" rel="stylesheet">
+        <link rel="stylesheet" href="css/swiper.css">
+        <link rel="stylesheet" href="css/loading.css" ><!-- Loading -->
+
     </head>
     <body>
         <!-- ////////// Contenedor principal ////////// -->
@@ -24,7 +26,7 @@ and open the template in the editor.
                         <option value="Hola" disabled selected>Hola <?php
                             if (isset($_POST["usuario"])) {
                                 echo $_POST["usuario"];
-                            }else{
+                            } else {
                                 echo "usuario";
                             }
                             ?>  </option>
@@ -66,15 +68,28 @@ and open the template in the editor.
                 <!-- Fin Menu -->  
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
+                    <div class="swiper-container" id="swiperMain">
+                        <div class="swiper-wrapper" id="main">
 
+                        </div>
+                    </div>
                 </div>
                 <!-- Fin Principal --> 
             </div>
             <!-- Fin Cuerpo -->
         </div>
         <!-- Fin Contenedor principal -->
+
+        <!-- Modal Loading -->
+        <div class="modalLoain">
+        </div>
+        <!-- Fin Modal Loading -->
+
+        <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
+        <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+        <script src="https://player.vimeo.com/api/player.js"></script><!-- Vimeo -->
+        <script src="js/swiper.js"></script>
+        <script type="text/javascript" src="js/demoOnLine.js"></script><!-- js -->
+
     </body>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
-    <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
-    <script type="text/javascript" src="js/agregarNuevo.js"></script><!-- js -->
 </html>

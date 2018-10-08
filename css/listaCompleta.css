@@ -38,6 +38,7 @@ td, tr{
     padding-bottom: 10px;
     padding-top:10px;
     text-align: center;
+    height: 60px;
 }
 
 /*----------------header---------------------*/
@@ -65,6 +66,7 @@ td, tr{
     background-color: white;
     height: 100%;
     color: black;
+    text-align: center;
 }
 
 .imagenPerfil{
@@ -123,6 +125,31 @@ td, tr{
     padding: 0;
     border-color: green;
 }
+.button-verde{
+    background-color: white;
+    border: none;
+    color: #006633;
+}
+
+.button-red{
+    background-color: white;
+    border: none;
+    color: red;
+}
+
+.div-submit{
+   padding: 30px;
+    text-align: center;
+}
+.button{
+    background-color: #006633;
+    border: none;
+    color: white;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 /*------------modal editar--------------------*/
 .modal, .modal-body, modal-title, modal-header, modal-content, modal-dialog, modal-footer{
     color: black;

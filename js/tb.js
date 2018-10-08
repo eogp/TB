@@ -18,9 +18,24 @@ $(document).on({
 //------------------------------------------------------------------------------
 
 $(document).ready(function () {
+    //heightAuto();
     iniciar();
 
 });
+
+
+
+function heightAuto() {
+    //document.getElementById('bodyindex').style.height = "" + $(window).height() + "px";
+   document.getElementById('swiperMain').style.height = "" + $(window).height() + "px";
+   // document.getElementById('main').style.height = "" + $(window).height() + "px";
+
+    $(window).resize(function () {
+       // document.getElementById('bodyindex').style.height = "" + $(window).height() + "px";
+        document.getElementById('swiperMain').style.height = "" + $(window).height() + "px";
+       // document.getElementById('main').style.height = "" + $(window).height() + "px";
+    });
+}
 
 function iniciar() {
     console.log("iniciar");
@@ -37,18 +52,15 @@ function iniciar() {
         url: 'ws/listaActivaWS.php',
         type: 'POST',
         success: function (response) {
-            if (response == "") {
-                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
-            } else {
-                console.log("ajax");
-
-                actualizarContenido(JSON.parse(response));
-
-                separadorOff();
-                //iniciarSwiper();
-
-                console.log("fin ajax");
-            }
+//            if (response == "") {
+//                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
+//            } else {
+            //console.log("ajax");
+            actualizarContenido(JSON.parse(response));
+            separadorOff();
+            //iniciarSwiper();
+            console.log("fin ajax");
+//            }
         },
         error: function () {
             alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
@@ -66,12 +78,14 @@ function actualizarContenido(json) {
             case '1':
                 //  TEXTO
                 div = document.createElement('div');
-                $(div).addClass("swiper-slide");
-
                 div2 = document.createElement('div');
+                h1 = document.createElement("h1");
 
+                $(div).addClass("swiper-slide");
+                
+                $(div).css('background-image', 'url(' + '/tb' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
+                
                 $(div2).css('display', 'table-cell');
-                $(div2).css('background-image', 'url(' + '/tb' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
                 $(div2).css('height', '1080px');
                 $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
@@ -79,7 +93,6 @@ function actualizarContenido(json) {
                 $(div2).css('text-align', 'center');
                 $(div2).css('vertical-align', 'middle');
 
-                h1 = document.createElement("h1");
                 $(h1).html(json.pantallas[i].texto1);
                 $(h1).css('color', 'white');
 
@@ -100,8 +113,8 @@ function actualizarContenido(json) {
                 div2 = document.createElement('div');
 
                 $(div2).css('background-image', 'url(' + '/tb' + json.pantallas[i].url_imagen + ')');
-                $(div2).css('height', '1080');
-                $(div2).css('width', '1920');
+                $(div2).css('height', '1080px');
+                $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
 
@@ -121,13 +134,15 @@ function actualizarContenido(json) {
 
                 div2 = document.createElement('div');
 
-                $(div2).css('height', '1080');
-                $(div2).css('width', '1920');
+                $(div2).css('height', '1080px');
+                $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
 
                 $(iframe).css('height', '1080');
                 $(iframe).css('width', '1920');
+                $(iframe).css('padding', '0');
+                $(iframe).css('margin', '0');
                 $(iframe).attr('src', '' + json.pantallas[i].url_vimeo);
 
                 $(iframe).appendTo($(div2));
@@ -187,8 +202,8 @@ function iniciarSwiper() {
 
 function tiempos() {
     console.log("tiempos");
-    
-    if (con < duracionSlide.length-1) {
+
+    if (con < duracionSlide.length - 1) {
         if (duracionSlide[con][0] == 0) {
             //VIDEO
             player = new Vimeo.Player(duracionSlide[con][1]);
@@ -212,14 +227,14 @@ function tiempos() {
             player = new Vimeo.Player(duracionSlide[con][1]);
             player.setVolume(0);
             player.on('ended', function () {
-                 iniciar();
+                iniciar();
             });
             player.play();
         } else {
             console.log(duracionSlide[con].toString());
             timer = setTimeout(function () {
                 console.log("timer");
-                 iniciar();
+                iniciar();
             }, duracionMilisegundos(duracionSlide[con][0]));
         }
         con++;

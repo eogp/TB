@@ -5,6 +5,18 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <?php
+session_start();
+/* Si no hay una sesión creada, redireccionar al login. */
+if (isset($_SESSION['usuario'])) {
+    //echo "Usuario logueado \n: ";
+    //print_r($_SESSION['usuario']);
+    //$usuario = $_SESSION['usuario'];
+} else {
+    session_destroy();
+    header('Location: Login.php');
+    exit();
+}
+
 require "db/DBSingleton.php";
 $dbSingleton = DBSingleton::getInstance();
 $db = $dbSingleton->getRedBean();
@@ -25,10 +37,10 @@ $db = $dbSingleton->getRedBean();
             <div class="row">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 header-user ">
                     <img src="images/user.png" class="imagenPerfil"/>
-                    <select class="selectSesion">
+                    <select id="selec-sesion" class="selectSesion">
                         <option value="Hola" disabled selected>Hola <?php
-                            if (isset($_POST["usuario"])) {
-                                echo $_POST["usuario"];
+                            if (isset($_SESSION["usuario"])) {
+                                echo $_SESSION["usuario"];
                             } else {
                                 echo "usuario";
                             }
@@ -49,17 +61,17 @@ $db = $dbSingleton->getRedBean();
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-verdemo.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Ver demo online">
+                        <input type="button" class="btn-menu" value="Ver demo online" onclick="window.open('tb.php', '_blank')">
                     </div>
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-listaactiva.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista activa">
+                        <input type="button" class="btn-menu" value="Lista activa" onclick="location.href = 'ListaActiva.php'">
                     </div>
                     <hr class="hr-menu">    
                     <div class="row">
                         <img src="images/icono-listacompleta.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista completa">
+                        <input type="button" class="btn-menu" value="Lista completa" onclick="location.href = 'ListaCompleta.php'">
                     </div>
                     <hr class="hr-menu">   
                     <div class="div_menu_selecionado row">
@@ -72,21 +84,21 @@ $db = $dbSingleton->getRedBean();
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
                     <div>
-                        <form action="controlers/agregarControler.php" method="post" enctype="multipart/form-data">
+                        <form id="formluario" action="controlers/agregarControler.php" method="post" enctype="multipart/form-data">
                             <div>
-                                <div>
+                                <div  class="div-etiquetas">
                                     Nombre:
                                 </div>
                                 <div>
-                                    <input type="text" name="nombre">
+                                    <input id="input-nombre" type="text" name="nombre" class="input-cuerpo">
                                 </div>
                             </div>
                             <div>
-                                <div>
+                                <div class="div-etiquetas">
                                     Categoría:
                                 </div>
                                 <div>
-                                    <select name="categoria">
+                                    <select id="select-categoria" name="categoria" class="select-cuerpo">
                                         <option value=0 selected="true" disabled="disabled">elija una opción</option>
                                         <?php
                                         $categorias = $db->findAll("CATEGORIAS", "activo = 1");
@@ -101,12 +113,12 @@ $db = $dbSingleton->getRedBean();
                                 </div>
                             </div>
                             <div>
-                                <div>
+                                <div class="div-etiquetas">
                                     Tipo:
                                 </div>
                                 <div>
-                                    <select id="select-tipo" name="tipo">
-                                        <option value=0 selected="true" disabled="disabled">elija una opción</option>
+                                    <select id="select-tipo" name="tipo" class="select-cuerpo">
+                                        <option value=0 selected="true" disabled="disabled" >elija una opción</option>
                                         <?php
                                         $tipos = $db->findAll("TIPOS", "activo = 1");
                                         $retorno = "";
@@ -120,15 +132,16 @@ $db = $dbSingleton->getRedBean();
                                 </div>
                             </div>
                             <div id="div-texto" hidden>
-                                <div>
+                                <div class="div-etiquetas">
                                     Texto:
                                 </div>
                                 <div>
-                                    <input type="text" name="texto">
+                                    <textarea id="text-area" rows="4" cols="50" name="texto" maxlength="100" class="area-text" placeholder="Maximo 100 cartaeres"></textarea>
+
                                 </div>    
                             </div>
                             <div id="div-imagen" hidden>
-                                <div>
+                                <div class="div-etiquetas">
                                     Imágen:
                                 </div>
                                 <div>
@@ -139,27 +152,27 @@ $db = $dbSingleton->getRedBean();
                                 </div>
                             </div>
                             <div id="div-duracion" hidden>
-                                <div>
+                                <div class="div-etiquetas">
                                     Duración:
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="minutos" name="minutos">
+                                    <input type="number" id="min" placeholder="minutos" name="minutos" class="input-cuerpo">
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="segundos" name="segundos">
+                                    <input type="number" id="sec" placeholder="segundos" name="segundos" class="input-cuerpo">
                                 </div>
                             </div>
                             <div id="div-video" hidden>
-                                <div>
+                                <div class="div-etiquetas">
                                     Link Vimeo:
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="copie el link aquí" name="video">
+                                    <input type="text" id="video" placeholder="copie el link aquí" name="video" class="input-cuerpo">
                                 </div>
                             </div>
                             <br>
-                            <div>
-                                <input type="submit" value="Agregar" disabled="true" id="submit" name="agregarPantalla">
+                            <div class="div-submit">
+                                <input type="submit" value="Agregar" disabled="true" id="submit" name="agregarPantalla" class="button">
                             </div>
                         </form>
                     </div>
@@ -170,7 +183,11 @@ $db = $dbSingleton->getRedBean();
         </div>
         <!-- Fin Contenedor principal -->
     </body>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
     <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js" type="text/javascript"></script><!-- Validar Campos -->
+
     <script type="text/javascript" src="js/agregarNuevo.js"></script><!-- js -->
+
 </html>

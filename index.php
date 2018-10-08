@@ -9,7 +9,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title></title>
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
-        <link rel="stylesheet" href="css/login.css" type="text/css"/><!-- Style -->
+        <link rel="stylesheet" href="css/index.css" type="text/css"/><!-- Style -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body class="body ">
@@ -18,7 +18,7 @@ and open the template in the editor.
         ?>
 
         <div class="cuerpo">
-            <form action="controlers/loginControler.php" method="POST">
+            <form action="controlers/loginTBControler.php" method="POST">
                 <div class="row">
                     <div class="titulo">Bienvenido, por favor completa tus datos para ingresar.</div>
                 </div>

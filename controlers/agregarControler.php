@@ -1,5 +1,17 @@
 <?php
 
+session_start();
+/* Si no hay una sesión creada, redireccionar al login. */
+if (isset($_SESSION['usuario'])) {
+    //echo "Usuario logueado \n: ";
+    //print_r($_SESSION['usuario']);
+    //$usuario = $_SESSION['usuario'];
+} else {
+    session_destroy();
+    header('Location: ../Login.php');
+    exit();
+}
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,7 +41,7 @@ if (isset($_POST['agregarPantalla'])) {
     $pantallas->fecha = date("Y-m-d");
 
     $pantallas->activo = 1;
-    
+
     //VERIFICO TIPO DE PANTALLAS PARA 
     switch ($_POST['tipo']) {
         case '1':
@@ -41,44 +53,45 @@ if (isset($_POST['agregarPantalla'])) {
             //IMAGEN
             $pantallas->duracion = $_POST['minutos'] . ':' . $_POST['segundos'];
             //GUARDO EL BEAN EN LA BD Y OBTENO EL ID
-            $id_patalla=$db->store($pantallas);
+            $id_patalla = $db->store($pantallas);
             //LE ASIGNO AL BEAN EL ID DEVUELTO POR EL INSERT
-            $pantallas->id=$id_patalla;
+            $pantallas->id = $id_patalla;
             //AGREGO LA COLUMNA Y VALOR CON LA RUTA DE LA IMAGEN GUADADA
-            $pantallas->url_imagen=subirImagen($id_patalla);
+            $pantallas->url_imagen = subirImagen($id_patalla);
             break;
         case '3':
             //VIDEO
-            $pantallas->url_vimeo = 'https://player.vimeo.com/video/'.getIdFromURL($_POST['video']);
+            $pantallas->url_vimeo = 'https://player.vimeo.com/video/' . getIdFromURL($_POST['video']);
             break;
     }
 
     //GUARDO EL BEAN EN LA BD 
     $db->store($pantallas);
-    
-//return $id_pantallas = $db->store($pantallas);
+    header('Location: ../ListaCompleta.php');
+    exit();
 
+//return $id_pantallas = $db->store($pantallas);
 }
 
 //SUBIR IMAGENES Y RETORNAR RUTA EN SERVIDOR
 function subirImagen($id_patalla) {
     // MODIFICAR RUTA AL SUBIR AL HOSTING
-    $dir_subida = $_SERVER['DOCUMENT_ROOT'].'/tb/imagenes_pantallas/';
-    
+    $dir_subida = $_SERVER['DOCUMENT_ROOT'] . '/tb/imagenes_pantallas/';
+
     if (isset($_FILES['imagen'])) {
         //GUARDADO  DE IMAGEN
-        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir_subida.'imagen_pantalla_id_'.$id_patalla)) {
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir_subida . 'imagen_pantalla_id_' . $id_patalla)) {
             //return $dir_subida.'imagen_pantalla_id_'.$id_patalla;
-            return '/imagenes_pantallas/'.'imagen_pantalla_id_'.$id_patalla;
-        } 
+            return '/imagenes_pantallas/' . 'imagen_pantalla_id_' . $id_patalla;
+        }
     }
 }
 
 //OBTENER ID VIDEO
-function getIdFromURL($url){
-    
-   $array[]= split('/', $url);
-   $aux=end($array[count($array)-1]);
-   
-   return strval($aux);
+function getIdFromURL($url) {
+
+    $array[] = split('/', $url);
+    $aux = end($array[count($array) - 1]);
+
+    return strval($aux);
 }

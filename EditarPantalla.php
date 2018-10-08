@@ -5,11 +5,24 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <?php
+session_start();
+/* Si no hay una sesión creada, redireccionar al login. */
+if (isset($_SESSION['usuario'])) {
+    //echo "Usuario logueado \n: ";
+    //print_r($_SESSION['usuario']);
+    //$usuario = $_SESSION['usuario'];
+} else {
+    session_destroy();
+    header('Location: Login.php');
+    exit();
+}
+
+
 require "db/DBSingleton.php";
 $dbSingleton = DBSingleton::getInstance();
 $db = $dbSingleton->getRedBean();
 
-$pantalla=$db->load("pantallas", $_POST["idPantalla"]);
+$pantalla = $db->load("pantallas", $_POST["idPantalla"]);
 ?>
 <html>
     <head>
@@ -27,15 +40,15 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
             <div class="row">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 header-user ">
                     <img src="images/user.png" class="imagenPerfil"/>
-                    <select class="selectSesion">
+                    <select id="selec-sesion" class="selectSesion">
                         <option value="Hola" disabled selected>Hola <?php
-                            if (isset($_POST["usuario"])) {
-                                echo $_POST["usuario"];
+                            if (isset($_SESSION["usuario"])) {
+                                echo $_SESSION["usuario"];
                             } else {
                                 echo "usuario";
                             }
                             ?>  </option>
-                        <option value="cerrarSesion">Cerrar sesión</option>
+                        <option value="cerrarSesion" >Cerrar sesión</option>
                     </select>
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 header">
@@ -51,21 +64,21 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-verdemo.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Ver demo online">
+                        <input type="button" class="btn-menu" value="Ver demo online" onclick="window.open('tb.php', '_blank')">
                     </div>
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-listaactiva.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista activa">
+                        <input type="button" class="btn-menu" value="Lista activa" onclick="location.href = 'ListaActiva.php'">
                     </div>
                     <hr class="hr-menu">    
                     <div class="row">
                         <img src="images/icono-listacompleta.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista completa">
+                        <input type="button" class="btn-menu" value="Lista completa" onclick="location.href = 'ListaCompleta.php'">
                     </div>
                     <hr class="hr-menu">   
                     <div class="div_menu_selecionado row">
-                        <img src="images/icono-agregar.png" width="16" height="16"/>
+                        <img src="images/icono-editar.png" width="16" height="16"/>
                         <input type="button" class="btn-menu-selecionado" value="Editar">
                     </div>
                     <hr class="hr-menu">
@@ -76,27 +89,28 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
                     <div>
                         <form action="controlers/editarControler.php" method="post" enctype="multipart/form-data">
                             <div>
-                                <div>
+                                <input type="hidden" id="tipo" value="<?php echo $pantalla->id_tipos; ?>"/>
+                                <div  class="div-etiquetas">
                                     Nombre:
-                                  
+
                                 </div>
                                 <div>
-                                    <input type="text" name="nombre" value="<?php echo $pantalla->nombre ?>"/>
+                                    <input id="input-nombre" type="text" name="nombre" class="input-cuerpo" value="<?php echo $pantalla->nombre ?>"/>
                                 </div>
                             </div>
                             <div>
-                                <div>
+                                <div class="div-etiquetas">
                                     Categoría:
                                 </div>
                                 <div>
-                                    <select name="categoria">
+                                    <select id="select-categoria" name="categoria" class="select-cuerpo">
                                         <option value=0 disabled="disabled">elija una opción</option>
                                         <?php
                                         $categorias = $db->findAll("CATEGORIAS", "activo = 1");
                                         $retorno = "";
                                         foreach ($categorias as $categoria) {
-                                            $retorno = $retorno . '<option value=' . $categoria->id; 
-                                            if($categoria->id == $pantalla->id_categorias){
+                                            $retorno = $retorno . '<option value=' . $categoria->id;
+                                            if ($categoria->id == $pantalla->id_categorias) {
                                                 $retorno = $retorno . ' selected="true" ';
                                             }
                                             $retorno = $retorno . '>' . $categoria->descripcion . '</option>';
@@ -107,36 +121,30 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
                                     </select>
                                 </div>
                             </div>
-                           
+
                             <div id="div-texto" 
-                                <?php 
-                                if($pantalla->id_tipos!=1)
-                                {
-                                    echo 'hidden';
-                                    
-                                }
-                                ?> >
-                                <div>
+                            <?php
+                            if ($pantalla->id_tipos != 1) {
+                                echo 'hidden';
+                            }
+                            ?> >
+                                <div class="div-etiquetas">
                                     Texto:
                                 </div>
                                 <div>
-                                    <input type="text" name="texto" value="<?php 
-                                    if($pantalla->id_tipos==1)
-                                    {
-                                        echo $pantalla->texto1;
-
-                                    }
-                                    ?>" >
+                                    <textarea id="text-area" rows="4" cols="50" name="texto" maxlength="100" class="area-text" placeholder="Maximo 100 cartaeres"><?php
+                                        if ($pantalla->id_tipos == 1) {
+                                            echo $pantalla->texto1;
+                                        }
+                                        ?></textarea>
                                 </div>    
                             </div>
-                            <div id="div-imagen"<?php 
-                                if($pantalla->id_tipos!=2)
-                                {
-                                    echo 'hidden';
-                                    
-                                }
-                                ?> >
-                                <div>
+                            <div id="div-imagen"<?php
+                            if ($pantalla->id_tipos != 2) {
+                                echo 'hidden';
+                            }
+                            ?> >
+                                <div class="div-etiquetas">
                                     Imágen:
                                 </div>
                                 <div>
@@ -146,41 +154,37 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
                                     <input type="file" accept=".png, .jpg, .jpeg" name="imagen" id="image-upload" />
                                 </div>
                             </div>
-                            <div id="div-duracion"  <?php 
-                                if($pantalla->id_tipos==3)
-                                {
-                                    echo 'hidden';
-                                    
-                                }
-                                ?>>
-                                <div>
+                            <div id="div-duracion"  <?php
+                            if ($pantalla->id_tipos == 3) {
+                                echo 'hidden';
+                            }
+                            ?>>
+                                <div class="div-etiquetas">
                                     Duración:
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="minutos" name="minutos" value="<?php echo split(':', $pantalla->duracion)[0]?>"/>
+                                    <input type="number" id="min" placeholder="minutos" name="minutos" class="input-cuerpo" value="<?php echo split(':', $pantalla->duracion)[0] ?>"/>
                                 </div>
                                 <div>
-                                    <input type="number" placeholder="segundos" name="segundos" value="<?php echo split(':', $pantalla->duracion)[1]?>"/>
+                                    <input type="number" id="sec" placeholder="segundos" name="segundos" class="input-cuerpo" value="<?php echo split(':', $pantalla->duracion)[1] ?>"/>
                                 </div>
                             </div>
-                            <div id="div-video" <?php 
-                                if($pantalla->id_tipos!=3)
-                                {
-                                    echo 'hidden';
-                                    
-                                }
-                                ?>>
-                                <div>
+                            <div id="div-video" <?php
+                            if ($pantalla->id_tipos != 3) {
+                                echo 'hidden';
+                            }
+                            ?>>
+                                <div class="div-etiquetas">
                                     Link Vimeo:
                                 </div>
                                 <div>
-                                    <input type="text" placeholder="copie el link aquí" name="video" value="<?php echo $pantalla->url_vimeo?>"/>
+                                    <input id="video" type="text" placeholder="copie el link aquí" name="video" class="input-cuerpo" value="<?php echo $pantalla->url_vimeo ?>"/>
                                 </div>
                             </div>
                             <br>
-                            <div>
+                            <div class="div-submit">
                                 <input type="hidden" name="idpantalla" value="<?PHP echo $pantalla->id ?>"/>
-                                <input type="submit" value="Actualizar" id="submit" name="editarPantalla"/>
+                                <input type="submit" value="Actualizar" id="submit" name="editarPantalla" class="button"/>
                             </div>
                         </form>
                     </div>
@@ -191,7 +195,8 @@ $pantalla=$db->load("pantallas", $_POST["idPantalla"]);
         </div>
         <!-- Fin Contenedor principal -->
     </body>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
     <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+
     <script type="text/javascript" src="js/editarPantalla.js"></script><!-- js -->
 </html>

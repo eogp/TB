@@ -13,7 +13,20 @@ $(document).ready(function () {
     document.getElementById('select-tipo').addEventListener('change', function () {
         contenidoPorTipo(this.value);
     });
+    $('form').submit(function (e) {
+        if (!valCampos()) {
+            e.preventDefault();
+            console.log($("#select-categoria").val());
 
+            alert("Debe completar todos los campos");
+        }
+    });
+    
+    $("#selec-sesion").change(function (){
+       if($('#selec-sesion').val()=='cerrarSesion'){
+           location.href = 'controlers/cerrarControler.php';
+       };
+    });
 });
 
 //ajusta la aultura del div menu y el rpincipal
@@ -65,6 +78,39 @@ function contenidoPorTipo(valor) {
             $('#div-video').hide();
             $('#submit').prop('disabled', true);
             break;
+    }
+}
+
+
+function valCampos() {
+    switch ($("#select-tipo").val()) {
+        case '0':
+            return false;
+            break;
+        case '1':
+            return $("#select-categoria").val() != null
+                    && $("#select-tipo").val() != null
+                    && $("#text-area").val() != ''
+                    && $("#min").val() != ''
+                    && $("#sec").val() != ''
+                    && $("#input-nombre").val() != '';
+            break;
+        case '2':
+            return $("#select-categoria").val() != null
+                    && $("#select-tipo").val() != null
+                    && $("#image-upload").val() != ''
+                    && $("#min").val() != ''
+                    && $("#sec").val() != ''
+                    && $("#input-nombre").val() != '';
+            break;
+        case '3':
+            return $("#select-categoria").val() != null
+                    && $("#select-tipo").val() != null
+                    && $("#video").val() != ''
+                    && $("#input-nombre").val() != '';
+
+            break;
+
     }
 }
 

@@ -23,7 +23,7 @@ html,body{
     height:100%;
 
     color: white;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Cabin Condensed', sans-serif;
 
 }
 
@@ -108,4 +108,8 @@ html,body{
     margin: 0;
     padding: 0;
     border-color: green;
+}
+.swiper-container {
+    width: 1280px;
+    height: 720px;
 }

@@ -55,15 +55,10 @@ html,body{
     height: 100%;
     padding: 0;
     text-align: right;      
-    
-}
-
-.principal{
-    background-color: white;
-    height: 100%;
-    color: black;
 
 }
+
+
 
 .imagenPerfil{
     padding: 0px;
@@ -88,29 +83,29 @@ html,body{
     cursor:pointer;
 }
 .btn-menu{
-   
-   border: none;
-   height: 30px;
-   width: 70%;
-   margin-bottom: 10px;
-   margin-top: 10px;
-   text-align: left;
-   margin: 6%;
-   margin-right: 10%;
-   background: URL(../images/flecha_btn.png) no-repeat 100% 6px #006633;
+
+    border: none;
+    height: 30px;
+    width: 70%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: left;
+    margin: 6%;
+    margin-right: 10%;
+    background: URL(../images/flecha_btn.png) no-repeat 100% 6px #006633;
 }
 
 .btn-menu-selecionado{
-   
-   border: none;
-   height: 30px;
-   width: 70%;
-   margin-bottom: 10px;
-   margin-top: 10px;
-   text-align: left;
-   margin: 6%;
-   margin-right: 10%;
-   background: URL(../images/flecha_btn.png) no-repeat 100% 6px #003300;
+
+    border: none;
+    height: 30px;
+    width: 70%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: left;
+    margin: 6%;
+    margin-right: 10%;
+    background: URL(../images/flecha_btn.png) no-repeat 100% 6px #003300;
 }
 .div_menu_selecionado{
     background-color: #003300;
@@ -122,3 +117,60 @@ html,body{
     border-color: green;
 }
 
+
+/*----------------cuerpo---------------------*/
+
+.principal{
+    background-color: white;
+    height: 100%;
+    color: black;
+    padding: 100px;
+    padding-top: 80px; 
+    padding-left: 30%;
+}
+
+
+.input-cuerpo{
+    color: #006633;
+    width: 400px;
+    height: 30px;
+        border-radius: 5px;
+
+}
+
+.area-text{
+    color: #006633;
+    border-radius: 5px;
+
+    width: 400px;
+}
+
+.div-etiquetas{
+    font-size: 16px;
+    padding-bottom:  10px;
+    padding-top: 10px;
+}
+
+.select-cuerpo{
+    color: #006633;
+    background: white;
+        border-radius: 5px;
+
+    width: 400px;
+    height: 30px;
+    text-align-last:center;
+    cursor:pointer;
+}
+
+.button{
+    background-color: #006633;
+    border: none;
+    color: white;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.div-submit{
+    width: 400px;
+    text-align: center;
+}
