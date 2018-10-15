@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <?php
 session_start();
 /* Si no hay una sesión creada, redireccionar al login. */
@@ -21,6 +15,14 @@ require "db/DBSingleton.php";
 $dbSingleton = DBSingleton::getInstance();
 $db = $dbSingleton->getRedBean();
 ?>
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -61,7 +63,7 @@ $db = $dbSingleton->getRedBean();
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-verdemo.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Ver demo online" onclick="window.open('tb.php', '_blank')">
+                        <input type="button" class="btn-menu" value="Ver demo online" onclick="location.href = 'DemoOnLine.php'">
                     </div>
                     <hr class="hr-menu">
                     <div class="row">

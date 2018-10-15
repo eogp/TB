@@ -64,7 +64,7 @@ function valCampos() {
             break;
         case '2':
             return $("#select-categoria").val() != null
-                    && $("#image-upload").val() != ''
+                    //&& $("#image-upload").val() != ''
                     && $("#min").val() != ''
                     && $("#sec").val() != ''
                     && $("#input-nombre").val() != '';

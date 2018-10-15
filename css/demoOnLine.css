@@ -51,6 +51,12 @@ html,body{
 .principal{
     background-color: white;
     height: 100%;
+    padding-top: 25px;
+    
+}
+
+.swiper-demo{
+    background-color: gray;
 }
 
 .imagenPerfil{
@@ -112,4 +118,18 @@ html,body{
 .swiper-container {
     width: 1280px;
     height: 720px;
+}
+
+.button{
+    background-color: #006633;
+    border: none;
+    color: white;
+    width: 200px;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+.div-princiapl-btn{
+    text-align: center;
 }

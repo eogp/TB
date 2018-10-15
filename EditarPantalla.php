@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <?php
 session_start();
 /* Si no hay una sesión creada, redireccionar al login. */
@@ -24,6 +18,14 @@ $db = $dbSingleton->getRedBean();
 
 $pantalla = $db->load("pantallas", $_POST["idPantalla"]);
 ?>
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -64,7 +66,7 @@ $pantalla = $db->load("pantallas", $_POST["idPantalla"]);
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-verdemo.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Ver demo online" onclick="window.open('tb.php', '_blank')">
+                        <input type="button" class="btn-menu" value="Ver demo online" onclick="location.href = 'DemoOnLine.php'">
                     </div>
                     <hr class="hr-menu">
                     <div class="row">
@@ -189,14 +191,16 @@ $pantalla = $db->load("pantallas", $_POST["idPantalla"]);
                         </form>
                     </div>
                 </div>
-                <!-- Fin Principal --> 
-            </div>
-            <!-- Fin Cuerpo -->
-        </div>
-        <!-- Fin Contenedor principal -->
-    </body>
-    <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
-    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
 
-    <script type="text/javascript" src="js/editarPantalla.js"></script><!-- js -->
+            </div>
+            <!-- Fin Principal --> 
+        </div>
+        <!-- Fin Cuerpo -->
+    </div>
+    <!-- Fin Contenedor principal -->
+</body>
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
+<script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+
+<script type="text/javascript" src="js/editarPantalla.js"></script><!-- js -->
 </html>

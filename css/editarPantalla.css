@@ -50,6 +50,8 @@ html,body{
 
 }
 
+/*----------------menu---------------------*/
+
 .menu{
     background-color: #006633;
     height: 100%;
@@ -57,8 +59,6 @@ html,body{
     text-align: right;      
 
 }
-
-
 
 .imagenPerfil{
     padding: 0px;
@@ -82,8 +82,8 @@ html,body{
     appearance: none;
     cursor:pointer;
 }
-.btn-menu{
 
+.btn-menu{
     border: none;
     height: 30px;
     width: 70%;
@@ -107,6 +107,7 @@ html,body{
     margin-right: 10%;
     background: URL(../images/flecha_btn.png) no-repeat 100% 6px #003300;
 }
+
 .div_menu_selecionado{
     background-color: #003300;
 }
@@ -117,31 +118,30 @@ html,body{
     border-color: green;
 }
 
-
 /*----------------cuerpo---------------------*/
 
 .principal{
     background-color: white;
     height: 100%;
     color: black;
-    padding: 100px;
+        padding: 100px;
     padding-top: 80px; 
     padding-left: 30%;
 }
+
 
 
 .input-cuerpo{
     color: #006633;
     width: 400px;
     height: 30px;
-        border-radius: 5px;
+    border-radius: 5px;
 
 }
 
 .area-text{
     color: #006633;
     border-radius: 5px;
-
     width: 400px;
 }
 
@@ -154,8 +154,7 @@ html,body{
 .select-cuerpo{
     color: #006633;
     background: white;
-        border-radius: 5px;
-
+    border-radius: 5px;
     width: 400px;
     height: 30px;
     text-align-last:center;
@@ -170,6 +169,7 @@ html,body{
     padding: 10px;
     border-radius: 5px;
 }
+
 .div-submit{
     width: 400px;
     text-align: center;

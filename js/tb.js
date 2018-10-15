@@ -9,37 +9,38 @@ var duracionSlide = [];
 var con = 0;
 var timer;
 
-//LOADING AJAX------------------------------------------------------------------
-$(document).on({
-    ajaxStart: function () {
-        $("body").addClass("loading");
-    }
-});
-//------------------------------------------------------------------------------
+
 
 $(document).ready(function () {
-    //heightAuto();
-    iniciar();
-
+    separadorOnOff(true);
 });
 
+function separadorOnOff(activar) {
+    //console.log("timer separador");
+    if (activar) {
+        $("#separador").fadeIn(iniciar());
+        
+    } else {
+        //SI NO HAY CONTENIDO NO SACO EL SEPARADOR
+        if (duracionSlide != null && duracionSlide.length != 0) {
+            setTimeout(function () {
+                iniciarSwiper();
+                $("#separador").fadeOut();
 
+                //console.log("fin timer separador");
+            }, 15000);
+        } else {
+            setTimeout(function () {
+                iniciar();
 
-function heightAuto() {
-    //document.getElementById('bodyindex').style.height = "" + $(window).height() + "px";
-   document.getElementById('swiperMain').style.height = "" + $(window).height() + "px";
-   // document.getElementById('main').style.height = "" + $(window).height() + "px";
-
-    $(window).resize(function () {
-       // document.getElementById('bodyindex').style.height = "" + $(window).height() + "px";
-        document.getElementById('swiperMain').style.height = "" + $(window).height() + "px";
-       // document.getElementById('main').style.height = "" + $(window).height() + "px";
-    });
+                //console.log("fin timer separador");
+            }, 15000);
+        }
+    }
 }
 
 function iniciar() {
-    console.log("iniciar");
-
+    //console.log("iniciar");
     if (mySwiper != null)
         mySwiper.destroy(true, true);
     player = null;
@@ -49,29 +50,25 @@ function iniciar() {
 
     $.ajax({
         data: {pantalla: 1},
-        url: 'ws/listaActivaWS.php',
+        url: 'ws/listaPublicadaWS.php',
         type: 'POST',
         success: function (response) {
-//            if (response == "") {
-//                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
-//            } else {
-            //console.log(response);
             actualizarContenido(JSON.parse(response));
-            separadorOff();
-            //iniciarSwiper();
-            console.log("fin ajax");
-//            }
+            separadorOnOff(false);
+
+            //console.log("fin ajax");
         },
         error: function () {
             alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
         }
     });
-    console.log("fin iniciar");
+    //console.log("fin iniciar");
 }
 
 function actualizarContenido(json) {
-    console.log("actualizarContenido");
+    //console.log("actualizarContenido");
     $("#main").empty();
+    $("#main").css('background-color', '#006633');
     for (var i = 0; i < json.pantallas.length; i++) {
         switch (json.pantallas[i].id_tipos)
         {
@@ -82,9 +79,8 @@ function actualizarContenido(json) {
                 h1 = document.createElement("h1");
 
                 $(div).addClass("swiper-slide");
-                
-                $(div).css('background-image', 'url(' +  fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
-                
+                $(div).css('background-image', 'url(' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
+ 
                 $(div2).css('display', 'table-cell');
                 $(div2).css('height', '1080px');
                 $(div2).css('width', '1920px');
@@ -108,16 +104,16 @@ function actualizarContenido(json) {
             case '2':
                 //  IMAGEN
                 div = document.createElement('div');
-                $(div).addClass("swiper-slide");
-
                 div2 = document.createElement('div');
+
+                $(div).addClass("swiper-slide");
 
                 $(div2).css('background-image', 'url(' + json.pantallas[i].url_imagen + ')');
                 $(div2).css('height', '1080px');
                 $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
-
+ 
                 $(div2).appendTo($(div));
                 $(div).appendTo($("#main"));
 
@@ -129,20 +125,21 @@ function actualizarContenido(json) {
             case '3':
                 //  VIDEO
                 div = document.createElement('div');
-                iframe = document.createElement('iframe');
-                $(div).addClass("swiper-slide");
-
                 div2 = document.createElement('div');
+                iframe = document.createElement('iframe');
+
+                $(div).addClass("swiper-slide");
 
                 $(div2).css('height', '1080px');
                 $(div2).css('width', '1920px');
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
 
-                $(iframe).css('height', '1080');
-                $(iframe).css('width', '1920');
+                $(iframe).css('height', '1080px');
+                $(iframe).css('width', '1920px');
                 $(iframe).css('padding', '0');
                 $(iframe).css('margin', '0');
+                $(iframe).css('background-color', 'black');
                 $(iframe).attr('src', '' + json.pantallas[i].url_vimeo);
 
                 $(iframe).appendTo($(div2));
@@ -155,65 +152,61 @@ function actualizarContenido(json) {
                 duracionSlide.push(tiempoVideo);
                 break;
         }
+
     }
-    console.log("fin actualizarContenido");
+    //console.log("fin actualizarContenido");
 
 }
 
 function fondoCategoria(json, id) {
-    console.log("fondoCategoria");
+    //console.log("fondoCategoria");
     var retorno;
     for (var i = 0; i < json.categorias.length; i++) {
         if (json.categorias[i].id == id) {
             retorno = json.categorias[i].url_img_fondo;
         }
     }
-    console.log("fin fondoCategoria");
+    //console.log("fin fondoCategoria");
     return retorno;
 }
 
 function iniciarSwiper() {
-    console.log("iniciarSwiper");
+    //console.log("iniciarSwiper");
     mySwiper = new Swiper('.swiper-container', {
-        speed: 1500,
+        speed: 2000,
         spaceBetween: 100,
         effect: 'cube',
         init: false,
+        stopOnLastSlide: true,
         on: {
             init: function () {
                 tiempos();
-
-                console.log('swiper initialized');
-
+                //console.log('swiper initialized');
             },
             slideChange: function () {
                 tiempos();
-                console.log('swiper changes');
+                //console.log('swiper changes');
             }
         }
     });
-
     mySwiper.init();
-
-
-
-    console.log("fin iniciarSwiper");
+    //console.log("fin iniciarSwiper");
 }
 
 function tiempos() {
-    console.log("tiempos");
-
+    //console.log("tiempos");
     if (con < duracionSlide.length - 1) {
+        //QUEDAN ELEMENTOS EN COLA
         if (duracionSlide[con][0] == 0) {
             //VIDEO
             player = new Vimeo.Player(duracionSlide[con][1]);
             player.setVolume(0);
             player.on('ended', function () {
                 mySwiper.slideNext();
-
             });
             player.play();
         } else {
+            //NO ES VIDEO
             console.log(duracionSlide[con].toString());
             timer = setTimeout(function () {
                 console.log("timer");
@@ -221,30 +214,33 @@ function tiempos() {
             }, duracionMilisegundos(duracionSlide[con][0]));
         }
         con++;
+
     } else {
+        //ULTIMO ELEMENTO
         if (duracionSlide[con][0] == 0) {
             //VIDEO
             player = new Vimeo.Player(duracionSlide[con][1]);
             player.setVolume(0);
             player.on('ended', function () {
-                iniciar();
+                separadorOnOff(true);
             });
             player.play();
         } else {
+            //NO ES VIDEO
             console.log(duracionSlide[con].toString());
             timer = setTimeout(function () {
                 console.log("timer");
-                iniciar();
+
+                separadorOnOff(true);
             }, duracionMilisegundos(duracionSlide[con][0]));
         }
         con++;
-        console.log("fin tiempos");
-    }
 
+    }
 }
 
 function duracionMilisegundos(duracion) {
-    console.log("duracionMilisegundos");
+    //console.log("duracionMilisegundos");
     var aux = duracion.toString().split(":");
     var retorno = 0;
     for (var i = 0; i < aux.length; i++) {
@@ -255,18 +251,8 @@ function duracionMilisegundos(duracion) {
         }
 
     }
-    console.log("duracionMilisegundos " + retorno);
-    console.log("fin duracionMilisegundos");
+    //console.log("duracionMilisegundos " + retorno);
+    //console.log("fin duracionMilisegundos");
     return retorno;
 }
 
-function separadorOff() {
-    console.log("timer separador");
-    setTimeout(function () {
-        iniciarSwiper();
-        $("body").removeClass("loading");
-        console.log("fin timer separador");
-
-    }, 15000);
-
-}

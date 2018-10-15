@@ -39,8 +39,10 @@ if (isset($_POST['editarPantalla'])) {
         case 2:
             //IMAGEN
             $pantalla->duracion = $_POST['minutos'] . ':' . $_POST['segundos'];
-            //AGREGO LA COLUMNA Y VALOR CON LA RUTA DE LA IMAGEN GUADADA
-            $pantalla->url_imagen = subirImagen($pantalla->id);
+            //AGREGO VALOR CON LA RUTA DE LA IMAGEN GUADADA SI SE SUBIO UNA NUEVA IMAGEN
+            if (isset($_FILES['imagen']) && !$_FILES['imagen']['error'] > 0){
+                $pantalla->url_imagen = subirImagen($pantalla->id);
+            }
             break;
         case 3:
             //VIDEO
@@ -61,7 +63,7 @@ function subirImagen($id_patalla) {
     // MODIFICAR RUTA AL SUBIR AL HOSTING
     $dir_subida = '/home/c0990002/public_html/TB/imagenes_pantallas/';
 
-    if (isset($_FILES['imagen'])) {
+    if (isset($_FILES['imagen']) && !$_FILES['imagen']['error'] > 0) {
         //GUARDADO  DE IMAGEN
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir_subida . 'imagen_pantalla_id_' . $id_patalla)) {
             //return $dir_subida.'imagen_pantalla_id_'.$id_patalla;

@@ -10,27 +10,14 @@ var duracionSlide = [];
 var con = 0;
 var timer;
 
-//LOADING AJAX------------------------------------------------------------------
-$(document).on({
-    ajaxStart: function () {
-        $("body").addClass("loading");
-    },
-    ajaxStop: function () {
-        $("body").removeClass("loading");
-    }
-});
-//------------------------------------------------------------------------------
-
 // A $( document ).ready() block.
-$( document ).ready(function() {
+$(document).ready(function () {
     heightAuto();
-iniciar() ;
+    iniciar();
 });
 
 //ajusta la aultura del div menu y el rpincipal
 function heightAuto() {
-    //console.log($(window).height());
-
     // set initial div height / width
     document.getElementById('principal').style.height = "" + $(window).height() - 70 + "px";
     document.getElementById('menu').style.height = "" + $(window).height() - 70 + "px";
@@ -44,8 +31,7 @@ function heightAuto() {
 
 
 function iniciar() {
-    console.log("iniciar");
-
+    //console.log("iniciar");
     if (mySwiper != null)
         mySwiper.destroy(true, true);
     player = null;
@@ -58,25 +44,20 @@ function iniciar() {
         url: 'ws/listaActivaWS.php',
         type: 'POST',
         success: function (response) {
-//            if (response == "") {
-//                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
-//            } else {
-            //console.log("ajax");
             actualizarContenido(JSON.parse(response));
-            //separadorOff();
             iniciarSwiper();
-            console.log("fin ajax");
-//            }
+            //console.log("fin ajax");
+
         },
         error: function () {
             alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
         }
     });
-    console.log("fin iniciar");
+    //console.log("fin iniciar");
 }
 
 function actualizarContenido(json) {
-    console.log("actualizarContenido");
+    //console.log("actualizarContenido");
     $("#main").empty();
     for (var i = 0; i < json.pantallas.length; i++) {
         switch (json.pantallas[i].id_tipos)
@@ -88,9 +69,9 @@ function actualizarContenido(json) {
                 h1 = document.createElement("h1");
 
                 $(div).addClass("swiper-slide");
-                
-                $(div).css('background-image', 'url(' + '/tb' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
-                
+
+                $(div).css('background-image', 'url(' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
+                $(div2).css('background-size', '1280px 720px');
                 $(div2).css('display', 'table-cell');
                 $(div2).css('height', '720px');
                 $(div2).css('width', '1280px');
@@ -118,8 +99,9 @@ function actualizarContenido(json) {
 
                 div2 = document.createElement('div');
 
-                $(div2).css('background-image', 'url(' + '/tb' + json.pantallas[i].url_imagen + ')');
-               $(div2).css('height', '720px');
+                $(div2).css('background-image', 'url(' + json.pantallas[i].url_imagen + ')');
+                $(div2).css('background-size', '1280px 720px');
+                $(div2).css('height', '720px');
                 $(div2).css('width', '1280px');
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
@@ -145,10 +127,11 @@ function actualizarContenido(json) {
                 $(div2).css('padding', '0');
                 $(div2).css('margin', '0');
 
-                $(iframe).css('height', '1080');
-                $(iframe).css('width', '1920');
+                $(iframe).css('height', '720px');
+                $(iframe).css('width', '1280px');
                 $(iframe).css('padding', '0');
                 $(iframe).css('margin', '0');
+                $(iframe).css('background-color', 'black');
                 $(iframe).attr('src', '' + json.pantallas[i].url_vimeo);
 
                 $(iframe).appendTo($(div2));
@@ -162,95 +145,97 @@ function actualizarContenido(json) {
                 break;
         }
     }
-    console.log("fin actualizarContenido");
+    //console.log("fin actualizarContenido");
 
 }
 
 function fondoCategoria(json, id) {
-    console.log("fondoCategoria");
+    //console.log("fondoCategoria");
     var retorno;
     for (var i = 0; i < json.categorias.length; i++) {
         if (json.categorias[i].id == id) {
             retorno = json.categorias[i].url_img_fondo;
         }
     }
-    console.log("fin fondoCategoria");
+    //console.log("fin fondoCategoria");
     return retorno;
 }
 
 function iniciarSwiper() {
-    console.log("iniciarSwiper");
+    //console.log("iniciarSwiper");
     mySwiper = new Swiper('.swiper-container', {
-        speed: 400,
+        speed: 2000,
         spaceBetween: 100,
         effect: 'cube',
         init: false,
+        stopOnLastSlide: true,
         on: {
             init: function () {
                 tiempos();
-
-                console.log('swiper initialized');
-
+                //console.log('swiper initialized');
             },
             slideChange: function () {
                 tiempos();
-                console.log('swiper changes');
+                //console.log('swiper changes');
             }
         }
     });
-
     mySwiper.init();
-
-
-
-    console.log("fin iniciarSwiper");
+    //console.log("fin iniciarSwiper");
 }
 
 function tiempos() {
-    console.log("tiempos");
-
-    if (con < duracionSlide.length - 1) {
-        if (duracionSlide[con][0] == 0) {
-            //VIDEO
-            player = new Vimeo.Player(duracionSlide[con][1]);
-            player.setVolume(0);
-            player.on('ended', function () {
-                mySwiper.slideNext();
-
-            });
-            player.play();
+    //console.log("tiempos");
+    if (duracionSlide != null && duracionSlide.length != 0) {
+        //SOLO EJECUTO EL SWIPER SI HAY CONTENIDO
+        if (con < duracionSlide.length - 1) {
+            //EXISTEN MAS ELEMENTOS EN COLA
+            if (duracionSlide[con][0] == 0) {
+                // ES VIDEO
+                player = new Vimeo.Player(duracionSlide[con][1]);
+                player.setVolume(0);
+                player.on('ended', function () {
+                    mySwiper.slideNext();
+                });
+                player.play();
+            } else {
+                //NO ES VIDEO
+                //console.log(duracionSlide[con].toString());
+                timer = setTimeout(function () {
+                    //console.log("timer");
+                    mySwiper.slideNext();
+                }, duracionMilisegundos(duracionSlide[con][0]));
+            }
+            con++;
         } else {
-            console.log(duracionSlide[con].toString());
-            timer = setTimeout(function () {
-                console.log("timer");
-                mySwiper.slideNext();
-            }, duracionMilisegundos(duracionSlide[con][0]));
+            //ES EL ULTIMO ELEMENTO
+            if (duracionSlide[con][0] == 0) {
+                //ES VIDEO
+                player = new Vimeo.Player(duracionSlide[con][1]);
+                player.setVolume(0);
+                player.on('ended', function () {
+                    //iniciar();
+                });
+                player.play();
+            } else {
+                //NO ES VIDEO
+                console.log(duracionSlide[con].toString());
+                timer = setTimeout(function () {
+                    //console.log("timer");
+                    //iniciar();
+                }, duracionMilisegundos(duracionSlide[con][0]));
+            }
+            con++;
+            //console.log("fin tiempos");
         }
-        con++;
     } else {
-        if (duracionSlide[con][0] == 0) {
-            //VIDEO
-            player = new Vimeo.Player(duracionSlide[con][1]);
-            player.setVolume(0);
-            player.on('ended', function () {
-                iniciar();
-            });
-            player.play();
-        } else {
-            console.log(duracionSlide[con].toString());
-            timer = setTimeout(function () {
-                console.log("timer");
-                iniciar();
-            }, duracionMilisegundos(duracionSlide[con][0]));
-        }
-        con++;
-        console.log("fin tiempos");
+        alert("No existen contenidos en la lista activa.");
     }
 
 }
 
 function duracionMilisegundos(duracion) {
-    console.log("duracionMilisegundos");
+    //console.log("duracionMilisegundos");
     var aux = duracion.toString().split(":");
     var retorno = 0;
     for (var i = 0; i < aux.length; i++) {
@@ -261,18 +246,28 @@ function duracionMilisegundos(duracion) {
         }
 
     }
-    console.log("duracionMilisegundos " + retorno);
-    console.log("fin duracionMilisegundos");
+    //console.log("duracionMilisegundos " + retorno);
+    //console.log("fin duracionMilisegundos");
     return retorno;
 }
 
-function separadorOff() {
-    console.log("timer separador");
-    setTimeout(function () {
-        iniciarSwiper();
-        $("body").removeClass("loading");
-        console.log("fin timer separador");
-
-    }, 30000);
-
+function publicar() {
+    var opcion = confirm("¿Desea actualizar la publicación actual?");
+    if (opcion) {
+        $.ajax({
+            data: {publicar: 1},
+            url: 'ws/publicarlistaActivaWS.php',
+            type: 'POST',
+            success: function (response) {
+                if (response.toString() == '1') {
+                    alert("La publicación se actualizo con exito!");
+                } else {
+                    alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
+                }
+            },
+            error: function () {
+                alert("Ocurrió un error al conectar con el servidor. Verifique su conexión a internet.");
+            }
+        });
+    }
 }

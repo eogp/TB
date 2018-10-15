@@ -1,3 +1,17 @@
+<?php
+session_start();
+/* Si no hay una sesión creada, redireccionar al login. */
+if (isset($_SESSION['usuario'])) {
+    //echo "Usuario logueado \n: ";
+    //print_r($_SESSION['usuario']);
+    //$usuario = $_SESSION['usuario'];
+} else {
+    session_destroy();
+    header('Location: https://www.rockerapp.com/TB/Login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -9,8 +23,8 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title>TMB</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
-        <link rel="stylesheet" href="css/agregarNuevo.css" type="text/css"/><!-- Style -->
-        <link href="https://fonts.googleapis.com/css?family=Cabin+Condensed" rel="stylesheet">
+        <link rel="stylesheet" href="css/demoOnLine.css" type="text/css"/><!-- Style -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="css/swiper.css">
         <link rel="stylesheet" href="css/loading.css" ><!-- Loading -->
 
@@ -51,17 +65,17 @@ and open the template in the editor.
                     <hr class="hr-menu">
                     <div class="row">
                         <img src="images/icono-listaactiva.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista activa">
+                        <input type="button" class="btn-menu" value="Lista activa" onclick="location.href = 'ListaActiva.php'">
                     </div>
                     <hr class="hr-menu">    
                     <div class="row">
                         <img src="images/icono-listacompleta.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Lista completa">
+                        <input type="button" class="btn-menu" value="Lista completa" onclick="location.href = 'ListaCompleta.php'">
                     </div>
                     <hr class="hr-menu">   
                     <div class="row">
                         <img src="images/icono-agregar.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Agregar nuevo">
+                        <input type="button" class="btn-menu" value="Agregar nuevo" onclick="location.href = 'AgregarNuevo.php'">
                     </div>
                     <hr class="hr-menu">
                 </div>
@@ -69,9 +83,15 @@ and open the template in the editor.
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
                     <div class="swiper-container" id="swiperMain">
-                        <div class="swiper-wrapper" id="main">
+                        <div class="swiper-wrapper  swiper-demo" id="main">
 
                         </div>
+
+                    </div>
+
+                    <div class="row div-princiapl-btn">
+                        <input type="button" class="button" value="Reiniciar" onclick="iniciar()"/>
+                        <input type="button" class="button" value="Publicar" onclick="publicar()"/>
                     </div>
                 </div>
                 <!-- Fin Principal --> 
