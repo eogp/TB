@@ -84,6 +84,11 @@ and open the template in the editor.
                         <input type="button" class="btn-menu" value="Agregar nuevo" onclick="location.href = 'AgregarNuevo.php'">
                     </div>
                     <hr class="hr-menu">
+                        <div class="row">
+                        <img src="images/icono-agregar.png" width="16" height="16"/>
+                        <input type="button" class="btn-menu" value="Subir excel" onclick="location.href = 'SubirCumpleanos.php'">
+                    </div>
+                    <hr class="hr-menu">
                 </div>
                 <!-- Fin Menu -->  
                 <!-- Principal -->  

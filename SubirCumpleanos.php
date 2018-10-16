@@ -10,6 +10,10 @@ if (isset($_SESSION['usuario'])) {
     header('Location: https://www.rockerapp.com/TB/Login.php');
     exit();
 }
+
+require "db/DBSingleton.php";
+$dbSingleton = DBSingleton::getInstance();
+$db = $dbSingleton->getRedBean();
 ?>
 
 <!DOCTYPE html>
@@ -18,15 +22,14 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
 <html>
     <head>
         <meta charset="UTF-8">
         <title>TMB</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" /><!-- Bootstrap -->      
-        <link rel="stylesheet" href="css/demoOnLine.css" type="text/css"/><!-- Style -->
+        <link rel="stylesheet" href="css/subirCumpleanos.css" type="text/css"/><!-- Style -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link rel="stylesheet" href="css/swiper.css">
-        <link rel="stylesheet" href="css/loading.css" ><!-- Loading -->
 
     </head>
     <body>
@@ -36,10 +39,11 @@ and open the template in the editor.
             <div class="row">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 header-user ">
                     <img src="images/user.png" class="imagenPerfil"/>
-                    <select class="selectSesion">
-                        <option value="Hola" disabled selected>Hola <?php
-                            if (isset($_POST["usuario"])) {
-                                echo $_POST["usuario"];
+                    <select id="selec-sesion" class="selectSesion">
+                        <option value="Hola" disabled selected>Hola 
+                            <?php
+                            if (isset($_SESSION["usuario"])) {
+                                echo $_SESSION["usuario"];
                             } else {
                                 echo "usuario";
                             }
@@ -58,9 +62,9 @@ and open the template in the editor.
                 <!-- Menu -->    
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 menu" id="menu">
                     <hr class="hr-menu">
-                    <div class="div_menu_selecionado row">
+                    <div class="row">
                         <img src="images/icono-verdemo.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu-selecionado" value="Ver demo online">
+                        <input type="button" class="btn-menu" value="Ver demo online" onclick="location.href = 'DemoOnLine.php'">
                     </div>
                     <hr class="hr-menu">
                     <div class="row">
@@ -68,7 +72,7 @@ and open the template in the editor.
                         <input type="button" class="btn-menu" value="Lista activa" onclick="location.href = 'ListaActiva.php'">
                     </div>
                     <hr class="hr-menu">    
-                    <div class="row">
+                    <div class="row row">
                         <img src="images/icono-listacompleta.png" width="16" height="16"/>
                         <input type="button" class="btn-menu" value="Lista completa" onclick="location.href = 'ListaCompleta.php'">
                     </div>
@@ -78,28 +82,55 @@ and open the template in the editor.
                         <input type="button" class="btn-menu" value="Agregar nuevo" onclick="location.href = 'AgregarNuevo.php'">
                     </div>
                     <hr class="hr-menu">
-                        <div class="row">
+                    <div class="div_menu_selecionado">
                         <img src="images/icono-agregar.png" width="16" height="16"/>
-                        <input type="button" class="btn-menu" value="Subir excel" onclick="location.href = 'SubirCumpleanos.php'">
+                        <input type="button" class="btn-menu-selecionado" value="Subir excel" >
                     </div>
                     <hr class="hr-menu">
                 </div>
                 <!-- Fin Menu -->  
                 <!-- Principal -->  
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 principal" id="principal">
-                    <div class="swiper-container" id="swiperMain">
-                        <div class="swiper-wrapper  swiper-demo" id="main">
-
-                        </div>
-
+                    <div>
+                        <form method="post" action="controlers/subirCumpleanos.php" enctype="multipart/form-data">
+                            <div>
+                                 <br/>
+                                    <h4>Para garantizar la correcta incorporacion de los datos debe tener en cuenta:</h4>
+                                <p >
+                                   
+                                    <br/>
+                                    <br/>
+                                    -La extension del archivo debe ser .xls.
+                                    <br/>
+                                    -El nombre de la hoja debe ser 'Cumpleanos' dado que no se computa la letra ñ.
+                                    <br/>
+                                    -La columna A debe contener el día del cumpleaños en formato numérico.
+                                    <br/>
+                                    -La columna B debe contener el mes del cumpleaños en formato numérico.
+                                    <br/>
+                                    -La columna C debe contener el año del cumpleaños en formato numérico.
+                                    <br/>
+                                    -La columna D debe contener el nombre dle empleado.
+                                    <br/>
+                                    -La columna E debe contener el apellido dle empleado.
+                                    <br/>
+                                    <br/>
+                                    * Nota: la fila 1 se reserva para los encabezados.
+                                    <br/>
+                                    <br/>
+                                </p>
+                            </div>
+                            <div>
+                                <input type="file" accept=".xls" name="excel" id="excel-upload" />
+                            </div>
+                            <br/>
+                            <br/>
+                            <div>
+                                <input type="submit" value="Subir excel" class="button"/>
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="row div-princiapl-btn">
-                        <input type="button" class="button" value="Reiniciar" onclick="iniciar()"/>
-                        <input type="button" class="button" value="Publicar" onclick="publicar()"/>
-                    </div>
-                </div>
-                <!-- Fin Principal --> 
+                </div><!-- Fin Principal --> 
             </div>
             <!-- Fin Cuerpo -->
         </div>
@@ -109,12 +140,8 @@ and open the template in the editor.
         <div class="modalLoain">
         </div>
         <!-- Fin Modal Loading -->
-
-        <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
-        <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
-        <script src="https://player.vimeo.com/api/player.js"></script><!-- Vimeo -->
-        <script src="js/swiper.js"></script>
-        <script type="text/javascript" src="js/demoOnLine.js"></script><!-- js -->
-
     </body>
+    <script type="text/javascript" src="js/jquery-2.1.1.js"></script><!-- Jquery -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+    <script type="text/javascript" src="js/subirCumpleanos.js"></script><!-- Jquery -->
 </html>

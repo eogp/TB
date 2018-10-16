@@ -66,11 +66,12 @@ function actualizarContenido(json) {
                 //  TEXTO
                 div = document.createElement('div');
                 div2 = document.createElement('div');
-                h1 = document.createElement("h1");
+                textarea = document.createElement("textarea");
 
                 $(div).addClass("swiper-slide");
 
                 $(div).css('background-image', 'url(' + fondoCategoria(json, json.pantallas[i].id_categorias) + ')');
+                $(div).css('background-size', '1280px 720px');
                 $(div2).css('background-size', '1280px 720px');
                 $(div2).css('display', 'table-cell');
                 $(div2).css('height', '720px');
@@ -80,10 +81,16 @@ function actualizarContenido(json) {
                 $(div2).css('text-align', 'center');
                 $(div2).css('vertical-align', 'middle');
 
-                $(h1).html(json.pantallas[i].texto1);
-                $(h1).css('color', 'white');
+                 $(textarea).html(json.pantallas[i].texto1);
+                $(textarea).attr('cols' , '33');
+                $(textarea).attr('rows' , '5');
+                $(textarea).css('color', 'white');
+                $(textarea).css('background-color', 'transparent');
+                $(textarea).css('border', 'none');
+                $(textarea).css('resize', 'none');
+                $(textarea).css( 'font-size', '60px' );
 
-                $(h1).appendTo($(div2));
+                $(textarea).appendTo($(div2));
                 $(div2).appendTo($(div));
                 $(div).appendTo($("#main"));
 

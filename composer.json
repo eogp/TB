@@ -1,0 +1,13 @@
+{
+    "name": "vendor/t-b",
+    "description": "Description of project TB.",
+    "authors": [
+        {
+            "name": "enriquegomezpena",
+            "email": "eo-gp@hotmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "dev-master"
+    }
+}

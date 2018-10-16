@@ -84,6 +84,11 @@ and open the template in the editor.
                         <input type="button" class="btn-menu-selecionado" value="Editar">
                     </div>
                     <hr class="hr-menu">
+                        <div class="row">
+                        <img src="images/icono-agregar.png" width="16" height="16"/>
+                        <input type="button" class="btn-menu" value="Subir excel" onclick="location.href = 'SubirCumpleanos.php'">
+                    </div>
+                    <hr class="hr-menu">
                 </div>
                 <!-- Fin Menu -->  
                 <!-- Principal -->  
@@ -134,7 +139,7 @@ and open the template in the editor.
                                     Texto:
                                 </div>
                                 <div>
-                                    <textarea id="text-area" rows="4" cols="50" name="texto" maxlength="100" class="area-text" placeholder="Maximo 100 cartaeres"><?php
+                                    <textarea id="text-area" rows="5" cols="20" name="texto" maxlength="125" class="area-text" placeholder="Maximo 100 cartaeres"><?php
                                         if ($pantalla->id_tipos == 1) {
                                             echo $pantalla->texto1;
                                         }
